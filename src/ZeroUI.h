@@ -1,34 +1,23 @@
-#ifndef ZERO_UI_H
-#define ZERO_UI_H
+#ifndef ZEROUI_H
+#define ZEROUI_H
 
+// Dependencias externas necesarias
 #include <TFT_eSPI.h>
-#include <vector>
-#include "components/Button.h"
-#include "components/Slider.h"
-#include "components/Switch.h"
-#include "components/Label.h"
-#include "style.h"
+#include <XPT2046_Touchscreen.h>
 
+// Core
+#include "core/Component.h"
+#include "core/Screen.h"
+#include "core/Renderer.h"
 
-typedef void (*ScreenChangeCallback)(int screenID);
+// Widgets
+#include "widgets/Button.h"
+#include "widgets/Label.h"
 
-class ZeroUI_Class {
-public:
-  void begin(TFT_eSPI &tft);
-  void touch(int x, int y);
-  void update(); 
-  void onScreenChange(ScreenChangeCallback cb);
-  void goTo(int screenID);
+// Espacio de nombres (opcional pero elegante)
+namespace ZeroUI {
+    void begin(TFT_eSPI& tft, XPT2046_Touchscreen& ts);
+    void loop();
+}
 
-  std::vector<Button> buttons;
-  std::vector<Slider> sliders;
-  std::vector<ToggleSwitch> switches;
-  std::vector<Label> labels;
-
-  TFT_eSPI* tft;
-  
-};
-
-extern ZeroUI_Class ZeroUI;
-
-#endif
+#endif // ZEROUI_H

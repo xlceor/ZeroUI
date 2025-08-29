@@ -2,23 +2,40 @@
 #include "Screen.h"
 #include <TFT_eSPI.h>
 
-Screen::Screen(TFT_eSPI& main_tft, uint16_t backgroundColor)
-: tft(main_tft), bgColor(backgroundColor){} 
+Screen::Screen(TFT_eSPI &main_tft, uint16_t backgroundColor)
+    : tft(main_tft), bgColor(backgroundColor) {}
 
-void Screen::addComponent(Component* comp) {
+void Screen::addComponent(Component *comp)
+{
   components.push_back(comp);
 }
 
-void Screen::draw() {
+void Screen::draw()
+{
   tft.fillScreen(bgColor);
 
-  for (Component* comp : components) {
-    comp->Draw();
+  for (Component *comp : components)
+  {
+    comp->draw(); // no Draw()
   }
 }
+void Screen::handleTouch(int x, int y)
+{
+  Event e;
+  e.type = EventType::TOUCH_DOWN;
+  e.x = x;
+  e.y = y;
+  handleEvent(e);
+}
 
-void Screen::handleTouch(int x, int y) {
-    for (Component* comp : components) {
-        comp->CheckTouch(x, y);
+void Screen::handleEvent(const Event &e)
+{
+  // Recorremos al revés: el último agregado está encima
+  for (auto it = components.rbegin(); it != components.rend(); ++it)
+  {
+    if ((*it)->onEvent(e))
+    {
+      break; // El evento fue consumido
     }
+  }
 }

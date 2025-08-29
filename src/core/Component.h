@@ -1,13 +1,19 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
-#include <TFT_eSPI.h>
-
+#include "Event.h"
 
 class Component {
-  public:
-    virtual void Draw() = 0;
-    virtual void CheckTouch(int x, int y) = 0;
+public:
+  int x, y, w, h;
+  bool visible = true;
+
+  virtual void draw() = 0;
+  virtual bool onEvent(const Event& e) = 0; // Devuelve true si consume el evento
+
+  bool contains(int px, int py) {
+    return (px >= x && px < x + w && py >= y && py < y + h);
+  }
 };
 
 #endif

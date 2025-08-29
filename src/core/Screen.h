@@ -7,18 +7,21 @@
 #include <TFT_eSPI.h>
 
 class Screen {
-  private:
+private:
     std::vector<Component*> components;
     TFT_eSPI& tft;
     uint16_t bgColor;
 
-  public:
+public:
     Screen(TFT_eSPI& tft, uint16_t backgroundColor);
     
     void addComponent(Component* comp);
     void draw();
     void setBgColor(uint16_t backgroundColor);
     void handleTouch(int x, int y);
+
+    // NUEVO
+    void handleEvent(const Event& e);
 };
 
 #endif
