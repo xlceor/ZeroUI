@@ -3,21 +3,17 @@
 #include <TFT_eSPI.h>
 
 Screen::Screen(TFT_eSPI &main_tft, uint16_t backgroundColor)
-    : tft(main_tft), bgColor(backgroundColor) {}
-
+    : tft(main_tft), bgColor(backgroundColor), renderer(main_tft) {}
 void Screen::addComponent(Component *comp)
 {
   components.push_back(comp);
 }
 
-void Screen::draw()
-{
-  tft.fillScreen(bgColor);
-
-  for (Component *comp : components)
-  {
-    comp->draw(); // no Draw()
-  }
+void Screen::draw() {
+    renderer.fillRect(0, 0, tft.width(), tft.height(), bgColor);
+    for (Component* comp : components) {
+        comp->draw(renderer); 
+    }
 }
 void Screen::handleTouch(int x, int y)
 {
@@ -30,12 +26,11 @@ void Screen::handleTouch(int x, int y)
 
 void Screen::handleEvent(const Event &e)
 {
-  // Recorremos al revés: el último agregado está encima
   for (auto it = components.rbegin(); it != components.rend(); ++it)
   {
     if ((*it)->onEvent(e))
     {
-      break; // El evento fue consumido
+      break; 
     }
   }
 }

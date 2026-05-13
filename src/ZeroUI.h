@@ -1,7 +1,7 @@
 #ifndef ZEROUI_H
 #define ZEROUI_H
 
-// Dependencias externas necesarias
+// Dependencias 
 #include <TFT_eSPI.h>
 #include <XPT2046_Touchscreen.h>
 
@@ -13,11 +13,16 @@
 // Widgets
 #include "widgets/Button.h"
 #include "widgets/Label.h"
+#include "widgets/VBox.h"
 
-// Espacio de nombres (opcional pero elegante)
+// Theming
+#include "Theme.h"
+
+
 namespace ZeroUI {
     void begin(TFT_eSPI& tft, XPT2046_Touchscreen& ts);
+    void setScreen(Screen* scr);
     void loop();
 }
 
-#endif // ZEROUI_H
+#endif

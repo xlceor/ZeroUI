@@ -1,29 +1,28 @@
 #include "ZeroUI.h"
-#include "screens.h" // Aquí llama a sus drawX()
 
-ZeroUI_Class ZeroUI;
+namespace ZeroUI {
+    static Screen* currentScreen = nullptr;
+    static TFT_eSPI* display = nullptr;
+    static XPT2046_Touchscreen* touch = nullptr;
 
-void ZeroUI_Class::begin(TFT_eSPI &display) {
-  tft = &display;
-  tft->fillScreen(BACKGROUND_COLOR);
-}
+    void begin(TFT_eSPI& tft, XPT2046_Touchscreen& ts) {
+        display = &tft;
+        touch = &ts;
+    }
 
-void ZeroUI_Class::touch(int tx, int ty) {
-  for (auto &b : buttons) if (b.isTouched(tx, ty)) b.onPress();
-  for (auto &s : sliders) if (s.isTouched(tx, ty)) s.update(tx);
-  for (auto &sw : switches) if (sw.isTouched(tx, ty)) sw.toggle();
-}
+    void setScreen(Screen* scr) {
+        currentScreen = scr;
+        if (currentScreen) currentScreen->draw();
+    }
 
-void ZeroUI_Class::update() {
+    void loop() {
+        if (!currentScreen || !touch) return;
 
-}
-static ScreenChangeCallback _screenCallback = nullptr;
-
-void ZeroUI_Class::onScreenChange(ScreenChangeCallback cb) {
-  _screenCallback = cb;
-}
-
-void ZeroUI_Class::goTo(int screenID) {
-  if (_screenCallback)
-    _screenCallback(screenID);
+        if (touch->touched()) {
+            TS_Point p = touch->getPoint();
+            int x = map(p.y, 300, 3600, 0, 320);
+            int y = map(p.x, 400, 3700, 240, 0);
+            currentScreen->handleTouch(x, y);
+        }
+    }
 }

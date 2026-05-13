@@ -23,25 +23,20 @@ void Button::setLabel(const char* lbl){ label = lbl; }
 void Button::setTextSize(int size) { textSize = size; }
 
 
-void Button::setEvent(void (*e)(int)){ event = e; }
-
+void Button::setEvent(std::function<void(int)> e) { event = e; }
 bool Button::onEvent(const Event& e) {
     // Solo procesamos eventos que sean CLICK o TOUCH_DOWN
     if ((e.type == EventType::CLICK || e.type == EventType::TOUCH_DOWN) && contains(e.x, e.y)) {
         if (event) event(1);
-        return true; // consume el evento
+        return true;
     }
-    return false; // no consume otros eventos
+    return false; 
 }
 
-void Button::draw() {
-    tft.fillRect(x, y, w, h, bgColor);
-    tft.drawRect(x, y, w, h, borderColor);
-    tft.setTextColor(textColor);
-    tft.setTextSize(textSize);   
+void Button::draw(Renderer& r) {
+    r.fillRect(x, y, w, h, bgColor);
+    r.drawRect(x, y, w, h, borderColor);
     if (label) {
-        int16_t xOffset = (w - tft.textWidth(label)) / 2;
-        int16_t yOffset = (h - tft.fontHeight()) / 2;
-        tft.drawString(label, x + xOffset, y + yOffset);
+        r.drawText(label, x + w/2, y + h/2, textColor, textSize, MC_DATUM);
     }
 }
