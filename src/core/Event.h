@@ -5,7 +5,9 @@ enum class EventType {
   TOUCH_DOWN,
   TOUCH_UP,
   TOUCH_MOVE,
-  CLICK
+  CLICK,
+  LONG_PRESS,
+  VALUE_CHANGED
 };
 
 struct Event {

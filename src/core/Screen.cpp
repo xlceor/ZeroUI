@@ -4,6 +4,14 @@
 
 Screen::Screen(TFT_eSPI &main_tft, uint16_t backgroundColor)
     : tft(main_tft), bgColor(backgroundColor), renderer(main_tft) {}
+
+Screen::~Screen() {
+  for (Component* comp : components) {
+    delete comp;
+  }
+  components.clear();
+}
+
 void Screen::addComponent(Component *comp)
 {
   components.push_back(comp);
@@ -15,10 +23,10 @@ void Screen::draw() {
         comp->draw(renderer); 
     }
 }
-void Screen::handleTouch(int x, int y)
+void Screen::handleTouch(int x, int y, EventType type)
 {
   Event e;
-  e.type = EventType::TOUCH_DOWN;
+  e.type = type;
   e.x = x;
   e.y = y;
   handleEvent(e);

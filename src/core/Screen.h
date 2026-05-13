@@ -16,11 +16,12 @@ private:
 
 public:
     Screen(TFT_eSPI& tft, uint16_t backgroundColor);
+    virtual ~Screen();
     
     void addComponent(Component* comp);
     void draw();          
     void setBgColor(uint16_t backgroundColor);
-    void handleTouch(int x, int y);
+    void handleTouch(int x, int y, EventType type);
     void handleEvent(const Event& e);
 };
 

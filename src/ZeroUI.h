@@ -20,7 +20,15 @@
 
 
 namespace ZeroUI {
+    struct TouchCalibration {
+        uint16_t xMin, xMax;
+        uint16_t yMin, yMax;
+        bool swapXY;
+        bool flipX, flipY;
+    };
+
     void begin(TFT_eSPI& tft, XPT2046_Touchscreen& ts);
+    void setCalibration(const TouchCalibration& cal);
     void setScreen(Screen* scr);
     void loop();
 }

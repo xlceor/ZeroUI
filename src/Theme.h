@@ -6,7 +6,7 @@
 struct Theme {
   uint16_t background;
   uint16_t primary;
-  uint16_t secondary;
+  uint16_t dim;
   uint16_t accent;
   uint16_t text;
   uint16_t border;

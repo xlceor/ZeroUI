@@ -6,6 +6,7 @@
 
 class Component {
 public:
+  virtual ~Component() {}
   int x, y, w, h;
   bool visible = true;
 
